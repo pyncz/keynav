@@ -1,0 +1,22 @@
+{
+  "todohighlight.keywords": [
+    {
+      "text": "'use client'",
+      "color": "#000000",
+      "backgroundColor": "#13ffa3",
+      "overviewRulerColor": "#13ffa3"
+    },
+    {
+      "text": "'use server'",
+      "color": "#000000",
+      "backgroundColor": "#63d3ff",
+      "overviewRulerColor": "#63d3ff",
+    },
+    {
+      "text": "export",
+      "color": "#bf94e4",
+      "backgroundColor": "#00000000",
+      "overviewRulerColor": "#bf94e4",
+    },
+  ],
+}
