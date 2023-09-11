@@ -1,6 +1,6 @@
 # keynav
 
-A little demo of keyboard-only navigation for React. Inspired by the menus in console games :D
+A little demo of keyboard-only navigation for React. Inspired by the menu of console games :D
 
 - Hold shortcut
 - Navigate among the routes with `↑` and `↓`
