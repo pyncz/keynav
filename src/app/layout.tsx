@@ -26,7 +26,7 @@ export default function RootLayout({
 
         <div className='text-center py-8 text-sm opacity-50'>
           Press{' '}
-          <pre className='inline font-mono px-1.5 py-1 rounded border bg-gray-800 text-[0.875em] text-gray-300 border-gray-500 border-opacity-10'>cmd + Q</pre>
+          <pre className='inline font-mono px-1.5 py-1 rounded border bg-gray-800 text-[0.875em] text-gray-300 border-gray-500 border-opacity-10'>Q</pre>
           {' '}for navigation
         </div>
       </body>
