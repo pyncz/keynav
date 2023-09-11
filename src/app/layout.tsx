@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { ReactNode, Suspense } from 'react'
+import { ReactNode } from 'react'
 import classNames from 'classnames'
 import { Navigation } from '../components'
 

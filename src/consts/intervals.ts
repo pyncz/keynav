@@ -1,1 +1,1 @@
-export const DEFAULT_INTERVAL = 200
+export const DEFAULT_INTERVAL = 50

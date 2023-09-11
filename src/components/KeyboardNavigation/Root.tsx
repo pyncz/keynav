@@ -1,7 +1,7 @@
 'use client'
 
 import type { FC, PropsWithChildren } from 'react'
-import { useCallback, useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { DEFAULT_INTERVAL } from '../../consts'
 import { throttle } from '../../utils'
 import { KeyboardNavigationContext } from './context'
@@ -24,15 +24,31 @@ interface Props {
   next?: KeyFilter
 
   value?: string
-  onValueChange: (v?: string) => void
+  onValueChange?: (v?: string) => void
 }
 
-const toKeyFilterFn = (k: KeyFilter): KeyFilterFn => {
+function toKeyFilterFn(k: KeyFilter): KeyFilterFn {
   if (typeof k === 'function') {
     return k
   }
   const keysArray = typeof k === 'string' ? [k] : k
   return (e) => keysArray.includes(e.key)
+}
+
+function getActiveIndexWithOffset<T = any>(values: T[], value: T, offset = 0) {
+  const currentIndex = values.findIndex(v => value === v)
+
+  if (currentIndex >= 0 && offset) {
+    const len = values.length
+    const newIndex = (currentIndex + offset) % len
+
+    // enclose the index within the len
+    return newIndex < 0
+      ? len + newIndex
+      : newIndex
+  }
+
+  return currentIndex
 }
 
 export const Root: FC<PropsWithChildren<Props>> = (props) => {
@@ -49,37 +65,24 @@ export const Root: FC<PropsWithChildren<Props>> = (props) => {
 
   const values = useRef<string[]>([])
 
-  const getActiveIndexWithOffset = useCallback((offset = 0) => {
-    const currentIndex = values.current.findIndex(v => value === v)
-
-    if (currentIndex >= 0 && offset) {
-      const len = values.current.length
-      const newIndex = (currentIndex + offset) % len
-
-      // enclose the index within the len
-      return newIndex < 0
-        ? len + newIndex
-        : newIndex
-    }
-
-    return currentIndex
-  }, [value, values])
-
-  const moveBy = throttle((offset = 0) => {
-    const newIndex = getActiveIndexWithOffset(offset)
+  const moveByHandler = useCallback((offset = 0, v?: string) => {
+    const newIndex = getActiveIndexWithOffset(values.current, v, offset)
     if (newIndex >= 0) {
       // call handler to set new value
       onValueChange?.(values.current[newIndex])
     }
-  }, { threshhold: throttleInterval })
+  }, [onValueChange])
 
-  const moveToPrev = () => moveBy(-1)
+  const moveBy = useMemo(() => throttle(moveByHandler, {
+    threshhold: throttleInterval,
+    withTrailingCall: true,
+  }), [moveByHandler, throttleInterval])
+
   const prevKeyFilter = toKeyFilterFn(prev)
-  useKey(prevKeyFilter, moveToPrev)
+  useKey(prevKeyFilter, () => moveBy(-1, value))
     
-  const moveToNext = () => moveBy(1)
   const nextKeyFilter = toKeyFilterFn(next)
-  useKey(nextKeyFilter, moveToNext)
+  useKey(nextKeyFilter, () => moveBy(1, value))
 
   return (
     <KeyboardNavigationContext.Provider value={{ values: values.current, value }}>

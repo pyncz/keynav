@@ -21,7 +21,7 @@ export const throttle = <Args extends any[]>(
     if (lastFulfilledCallTimestamp && now < lastFulfilledCallTimestamp + threshhold) {
       // hold on
       if (withTrailingCall) {
-        // forget previout deferred call planned
+        // forget previous deferred call planned
         clearTimeout(deferTimer)
 
         deferTimer = setTimeout(() => {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import type { FC, PropsWithChildren, RefAttributes } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 import { useKeyboardNavigation } from './context'
 import { useMount } from 'react-use'
 import { Slot, SlotProps } from '@radix-ui/react-slot'
@@ -26,7 +26,7 @@ export const Option: FC<PropsWithChildren<Props>> = (props) => {
     values.push(value)
   })
 
-  // once , focus on current option
+  // focus on the option once it becomes active
   useEffect(() => {
     if (isActive) {
       optionRef.current?.focus()

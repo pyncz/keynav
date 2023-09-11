@@ -2,12 +2,12 @@
 
 import classNames from 'classnames'
 import { useCallback, useEffect, useState } from 'react'
-import type { FC, PropsWithChildren } from 'react'
+import type { FC } from 'react'
 import { useKeyPressEvent } from 'react-use'
 import { KeyboardNavigation } from './KeyboardNavigation'
 import { usePathname, useRouter } from 'next/navigation'
 
-export const Navigation: FC<PropsWithChildren> = ({ children }) => {
+export const Navigation: FC = () => {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -47,38 +47,34 @@ export const Navigation: FC<PropsWithChildren> = ({ children }) => {
   useKeyPressEvent('q', onOpen, onClose)
 
   return (
-    <>
-      {children}
-
-      <KeyboardNavigation.Root
-        value={selectedRoute}
-        disabled={!showNavigation}
-        onValueChange={setSelectedRoute}
+    <KeyboardNavigation.Root
+      value={selectedRoute}
+      disabled={!showNavigation}
+      onValueChange={setSelectedRoute}
+    >
+      <nav
+        className={classNames(
+          'z-10 fixed inset-0 bg-black bg-opacity-80 p-24 duration-300',
+          showNavigation ? 'opacity-100' : 'pointer-events-none opacity-0',
+        )}
+        aria-hidden={!showNavigation}
       >
-        <nav
-          className={classNames(
-            'z-10 fixed inset-0 bg-black bg-opacity-80 p-24 duration-300',
-            showNavigation ? 'opacity-100' : 'pointer-events-none opacity-0',
-          )}
-          aria-hidden={!showNavigation}
-        >
-          <KeyboardNavigation.Option value='/' className='group'>
-            <div className="inline-flex p-1 group-data-active:bg-blue-700">
-              Home
-            </div>
-          </KeyboardNavigation.Option>
-          <KeyboardNavigation.Option value='/about' className='group'>
-            <div className="inline-flex p-1 group-data-active:bg-blue-700">
-              About
-            </div>
-          </KeyboardNavigation.Option>
-          <KeyboardNavigation.Option value='/not-about' className='group'>
-            <div className="inline-flex p-1 group-data-active:bg-blue-700">
-              Not About
-            </div>
-          </KeyboardNavigation.Option>
-        </nav>
-      </KeyboardNavigation.Root>
-    </>
+        <KeyboardNavigation.Option value='/' className='group'>
+          <div className="inline-flex p-1 group-data-active:bg-blue-700">
+            Home
+          </div>
+        </KeyboardNavigation.Option>
+        <KeyboardNavigation.Option value='/about' className='group'>
+          <div className="inline-flex p-1 group-data-active:bg-blue-700">
+            About
+          </div>
+        </KeyboardNavigation.Option>
+        <KeyboardNavigation.Option value='/not-about' className='group'>
+          <div className="inline-flex p-1 group-data-active:bg-blue-700">
+            Not About
+          </div>
+        </KeyboardNavigation.Option>
+      </nav>
+    </KeyboardNavigation.Root>
   )
 }
