@@ -49,13 +49,12 @@ export const Navigation: FC = () => {
   return (
     <KeyboardNavigation.Root
       value={selectedRoute}
-      disabled={!showNavigation}
       onValueChange={setSelectedRoute}
     >
       <nav
         className={classNames(
           'z-10 fixed inset-0 bg-black bg-opacity-80 p-24 duration-300',
-          showNavigation ? 'opacity-100' : 'pointer-events-none opacity-0',
+          showNavigation ? 'opacity-100' : 'opacity-0',
         )}
         aria-hidden={!showNavigation}
       >

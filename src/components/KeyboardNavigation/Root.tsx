@@ -66,12 +66,14 @@ export const Root: FC<PropsWithChildren<Props>> = (props) => {
   const values = useRef<string[]>([])
 
   const moveByHandler = useCallback((offset = 0, v?: string) => {
+    if (disabled) return
+
     const newIndex = getActiveIndexWithOffset(values.current, v, offset)
     if (newIndex >= 0) {
       // call handler to set new value
       onValueChange?.(values.current[newIndex])
     }
-  }, [onValueChange])
+  }, [disabled, onValueChange])
 
   const moveBy = useMemo(() => throttle(moveByHandler, {
     threshhold: throttleInterval,
