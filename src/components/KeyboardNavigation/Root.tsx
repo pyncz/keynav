@@ -35,17 +35,34 @@ function toKeyFilterFn(k: KeyFilter): KeyFilterFn {
   return (e) => keysArray.includes(e.key)
 }
 
-function getActiveIndexWithOffset<T = any>(values: T[], value: T, offset = 0) {
+function getActiveIndexWithOffset<T = any>(
+  values: T[],
+  value: T,
+  options?: {offset?: number, looped?: boolean },
+) {
+  const {
+    offset = 0,
+    looped = false,
+  } = options ?? {}
+
   const currentIndex = values.findIndex(v => value === v)
 
   if (currentIndex >= 0 && offset) {
     const len = values.length
-    const newIndex = (currentIndex + offset) % len
+    const newIndex = currentIndex + offset
+    const loopedNewIndex = newIndex % len
 
-    // enclose the index within the len
-    return newIndex < 0
-      ? len + newIndex
-      : newIndex
+    // if we go out of boundries
+    if (newIndex < 0) {
+      return looped
+        // enclose a negative index within the len
+        ? loopedNewIndex < 0 ? len + loopedNewIndex : loopedNewIndex
+        : 0
+    } else if (newIndex >= len) {
+      return looped ? loopedNewIndex : len - 1
+    }
+
+    return newIndex
   }
 
   return currentIndex
@@ -68,12 +85,12 @@ export const Root: FC<PropsWithChildren<Props>> = (props) => {
   const moveByHandler = useCallback((offset = 0, v?: string) => {
     if (disabled) return
 
-    const newIndex = getActiveIndexWithOffset(values.current, v, offset)
+    const newIndex = getActiveIndexWithOffset(values.current, v, { offset, looped })
     if (newIndex >= 0) {
       // call handler to set new value
       onValueChange?.(values.current[newIndex])
     }
-  }, [disabled, onValueChange])
+  }, [looped, disabled, onValueChange])
 
   const moveBy = useMemo(() => throttle(moveByHandler, {
     threshhold: throttleInterval,

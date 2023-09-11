@@ -50,6 +50,7 @@ export const Navigation: FC = () => {
     <KeyboardNavigation.Root
       value={selectedRoute}
       onValueChange={setSelectedRoute}
+      looped
     >
       <nav
         className={classNames(
