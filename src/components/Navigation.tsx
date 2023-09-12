@@ -1,19 +1,21 @@
 'use client'
 
 import classNames from 'classnames'
+import { usePathname, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import type { FC } from 'react'
 import { useKeyPressEvent } from 'react-use'
-import { KeyboardNavigation } from './KeyboardNavigation'
-import { usePathname, useRouter } from 'next/navigation'
 import { Key } from './Key'
+import { KeyboardNavigation } from './KeyboardNavigation'
 
 export const Navigation: FC<{ shortcut: string }> = ({ shortcut }) => {
   const router = useRouter()
   const pathname = usePathname()
 
   const [showNavigation, setShowNavigation] = useState(false)
-  const [selectedRoute, setSelectedRoute] = useState<string | undefined>(pathname)
+  const [selectedRoute, setSelectedRoute] = useState<string | undefined>(
+    pathname,
+  )
 
   const onOpen = () => {
     setShowNavigation(true)
@@ -37,14 +39,14 @@ export const Navigation: FC<{ shortcut: string }> = ({ shortcut }) => {
 
   // Hide menu on window loses focus as in this case user can release the button unnoticed anyway
   useEffect(() => {
-    window.addEventListener("blur", onBlur);
+    window.addEventListener('blur', onBlur)
 
     // clean up after
     return () => {
-      window.removeEventListener("blur", onBlur)
+      window.removeEventListener('blur', onBlur)
     }
   }, [onBlur])
-  
+
   useKeyPressEvent(shortcut, onOpen, onClose)
 
   return (
@@ -62,24 +64,25 @@ export const Navigation: FC<{ shortcut: string }> = ({ shortcut }) => {
       >
         <nav>
           <KeyboardNavigation.Option value='/' className='group'>
-            <div className="inline-flex p-1 group-data-active:bg-blue-700">
+            <div className='inline-flex p-1 group-data-active:bg-blue-700'>
               Home
             </div>
           </KeyboardNavigation.Option>
           <KeyboardNavigation.Option value='/about' className='group'>
-            <div className="inline-flex p-1 group-data-active:bg-blue-700">
+            <div className='inline-flex p-1 group-data-active:bg-blue-700'>
               About
             </div>
           </KeyboardNavigation.Option>
           <KeyboardNavigation.Option value='/not-about' className='group'>
-            <div className="inline-flex p-1 group-data-active:bg-blue-700">
+            <div className='inline-flex p-1 group-data-active:bg-blue-700'>
               Not About
             </div>
           </KeyboardNavigation.Option>
         </nav>
         <p className='px-1 text-gray-600 text-sm max-w-sm'>
-          Use arrows <Key>↑</Key> <Key>↓</Key> to navigate, while holding <Key>{shortcut}</Key>.
-          Release <Key>{shortcut}</Key> when you have selected the route you want.
+          Use arrows <Key>↑</Key> <Key>↓</Key> to navigate, while holding{' '}
+          <Key>{shortcut}</Key>. Release <Key>{shortcut}</Key> when you have
+          selected the route you want.
         </p>
       </div>
     </KeyboardNavigation.Root>

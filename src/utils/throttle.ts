@@ -7,10 +7,8 @@ export const throttle = <Args extends any[]>(
     withTrailingCall?: boolean
   },
 ) => {
-  const {
-    threshhold = DEFAULT_INTERVAL,
-    withTrailingCall = false,
-  } = options ?? {}
+  const { threshhold = DEFAULT_INTERVAL, withTrailingCall = false } =
+    options ?? {}
 
   let lastFulfilledCallTimestamp: number
   let deferTimer: NodeJS.Timeout
@@ -18,7 +16,10 @@ export const throttle = <Args extends any[]>(
   return (...args: Args) => {
     const now = +new Date()
 
-    if (lastFulfilledCallTimestamp && now < lastFulfilledCallTimestamp + threshhold) {
+    if (
+      lastFulfilledCallTimestamp &&
+      now < lastFulfilledCallTimestamp + threshhold
+    ) {
       // hold on
       if (withTrailingCall) {
         // forget previous deferred call planned

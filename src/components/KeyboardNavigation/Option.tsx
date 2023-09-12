@@ -1,10 +1,10 @@
 'use client'
 
+import { Slot, SlotProps } from '@radix-ui/react-slot'
 import { useEffect, useRef } from 'react'
 import type { FC, PropsWithChildren } from 'react'
-import { useKeyboardNavigation } from './context'
 import { useMount } from 'react-use'
-import { Slot, SlotProps } from '@radix-ui/react-slot'
+import { useKeyboardNavigation } from './context'
 
 interface Props extends SlotProps {
   asChild?: boolean
@@ -36,10 +36,7 @@ export const Option: FC<PropsWithChildren<Props>> = (props) => {
   const Wrapper = asChild ? Slot : 'div'
 
   return (
-    <Wrapper
-      ref={optionRef}
-      {...{...dataAttributes, ...forwardedProps}}
-    >
+    <Wrapper ref={optionRef} {...{ ...dataAttributes, ...forwardedProps }}>
       {children}
     </Wrapper>
   )

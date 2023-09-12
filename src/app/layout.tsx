@@ -1,9 +1,9 @@
-import './globals.css'
+import classNames from 'classnames'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
-import classNames from 'classnames'
 import { Key, Navigation } from '../components'
+import './globals.css'
 
 const menuShortcut = 'q'
 const inter = Inter({ subsets: ['latin'] })
@@ -19,14 +19,20 @@ export default function RootLayout({
   children: ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={classNames('bg-gray-900 text-gray-50 min-h-screen flex flex-col', inter.className)}>
+    <html lang='en'>
+      <body
+        className={classNames(
+          'bg-gray-900 text-gray-50 min-h-screen flex flex-col',
+          inter.className,
+        )}
+      >
         <Navigation shortcut={menuShortcut} />
 
         {children}
 
         <div className='text-center py-8 text-sm opacity-50'>
-          Hold <Key className='text-gray-400'>{menuShortcut}</Key> for navigation
+          Hold <Key className='text-gray-400'>{menuShortcut}</Key> for
+          navigation
         </div>
       </body>
     </html>
